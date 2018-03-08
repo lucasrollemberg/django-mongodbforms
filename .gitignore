@@ -7,5 +7,9 @@ MANIFEST
 build/*
 *egg*
 *.bak
+.settings/*
+*.tmproj
+.tm_properties
+
 
 

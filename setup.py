@@ -5,13 +5,13 @@ from subprocess import call
 
 def convert_readme():
     try:
-        call(["pandoc", "-t",  "rst", "-o",  "README.txt", "readme.md"])
+        call(["pandoc", "-f", "markdown_github", "-t",  "rst", "-o",  "README.txt", "readme.md"])
     except OSError:
         pass
     return open('README.txt').read()
 
 setup(name='mongodbforms',
-    version='0.1.5',
+    version='0.3.1',
     description="An implementation of django forms using mongoengine.",
     author='Jan Schrewe',
     author_email='jan@schafproductions.com',
@@ -30,5 +30,5 @@ setup(name='mongodbforms',
     long_description=convert_readme(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['setuptools', 'django>=1.3', 'mongoengine>=0.6',],
+    install_requires=['setuptools', 'django>=1.4', 'mongoengine>=0.8.3',],
 )
