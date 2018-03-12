@@ -311,6 +311,11 @@ class DocumentFormMetaclass(DeclarativeFieldsMetaclass):
         opts = new_class._meta = ModelFormOptions(
             getattr(new_class, 'Meta', None)
         )
+        
+        if not hasattr(new_class, 'declared_fields'):
+            if hasattr(new_class, 'base_fields'):
+                new_class.declared_fields = new_class.base_fields
+
         if opts.document:
             formfield_generator = getattr(opts,
                                           'formfield_generator',
@@ -323,6 +328,7 @@ class DocumentFormMetaclass(DeclarativeFieldsMetaclass):
                                          formfield_generator)
             # make sure opts.fields doesn't specify an invalid field
             none_document_fields = [k for k, v in fields.items() if not v]
+            
             missing_fields = (set(none_document_fields) -
                               set(new_class.declared_fields.keys()))
             if missing_fields:
@@ -333,7 +339,9 @@ class DocumentFormMetaclass(DeclarativeFieldsMetaclass):
             # Override default model fields with any custom declared ones
             # (plus, include all the other declared fields).
             fields.update(new_class.declared_fields)
+        
         else:
+
             fields = new_class.declared_fields
 
         new_class.base_fields = fields
